@@ -122,5 +122,8 @@ def main(args):
         print (str(e))
         return -1
 
-if __name__ == '__main__':
+def entry():
     sys.exit(main(sys.argv[1:]))
+
+if __name__ == '__main__':
+    entry()

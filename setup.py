@@ -4,7 +4,6 @@ setup(
     name="lines",
     version="0.1.0-a",
     description='Treat lines of a file as elements of a set',
-    long_description=open('README.md').read(),
     license='GPL',
     author='Noufal Ibrahim',
     author_email='noufal@nibrahim.net.in' ,
@@ -23,6 +22,6 @@ setup(
         'Programming Language :: Python',
     ],
     entry_points = {
-        'console_scripts' : [ 'lines = lines:main' ]
+        'console_scripts' : [ 'lines = lines:entry' ]
         }
 )
