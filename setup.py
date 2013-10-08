@@ -22,4 +22,7 @@ setup(
         'Topic :: Utilities',
         'Programming Language :: Python',
     ],
+    entry_points = {
+        'console_scripts' : [ 'lines = lines:main' ]
+        }
 )
