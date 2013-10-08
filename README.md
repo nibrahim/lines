@@ -80,7 +80,6 @@ These are a few other operations which I've found useful
 * *Squeeze blanks*
 
 This operation squeezes out the blank lines in a file. 
-**Warning: This modifies the file in place.**
 
 So, If you run
 `lines --squeeze file1` where `file1` looks like this
