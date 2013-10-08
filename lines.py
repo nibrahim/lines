@@ -4,6 +4,8 @@
 import sys
 import argparse
 
+from pylev import levenshtein
+
 __version__ = "0.1.0-a"
 
 def union(s1, s2):
@@ -17,21 +19,53 @@ def relative_complement(s1, s2):
 
 def symmetric_difference(s1, s2):
     return s1.union(s2) - s1.intersection(s2)
+
 def squeeze(f1):
     for i in f1:
         if i.strip():
             yield i.strip()
+
+def patterns(f1, dist = 55, outlier=0.1):
+    """Will partition elements into subsets. The elements of a subset will
+    not have a Levenshtein distance of more than :dist: from the other
+    members of the same subset
+    """
+    sets = []
+    seen = set()
+    for i in (x.strip() for x in f1 if x.strip()):
+        if i in seen:
+            continue
+        s = set([i])
+        seen.add(i)
+        others = set(x.strip() for x in f1 if x.strip()) - seen
+        for j in others:
+            v = levenshtein(i, j) 
+            if v <= dist:
+                s.add(j)
+                seen.add(j)
+        sets.append(s)
+    # Format for printing
+    retval = []
+    total = len(list(x.strip() for x in f1 if x.strip()))
+    for i in sets:
+        l = float(len(i))
+        if l/total < outlier: # 10 percent (outlier)
+            retval.append("{} elements - {}".format(len(i), i))
+        else:
+            retval.append("{} elements".format(len(i)))
+    
+    return retval
+
         
-operations = {"u" : union,
-              "i" : intersection,
-              "d" : relative_complement,
-              "s" : symmetric_difference}
+    
+        
 two_set_operations = {"u" : union,
                       "i" : intersection,
                       "d" : relative_complement,
                       "s" : symmetric_difference}
 
-one_set_operations = {"squeeze" : squeeze}
+one_set_operations = {"squeeze" : squeeze,
+                      "patterns" : patterns}
 
 def parse_args(args):
     parser = argparse.ArgumentParser(description = "Perform set operations on lines in file(s)")
@@ -45,6 +79,7 @@ def parse_args(args):
     operation.add_argument('-d', action="store_true", help = "file1 - file2 (relative complement)")
     operation.add_argument('-s', action="store_true", help = "(file1 ∪ file2) - (file1 ∩ file2) (symmetric difference)")
     operation.add_argument('--squeeze', action="store_true", help = "squeezes out newlines from input file1")
+    operation.add_argument('--patterns', action="store_true", help = "Groups lines by pattern")
 
     ret = parser.parse_args(args)
     try:

@@ -10,7 +10,7 @@ setup(
     author_email='noufal@nibrahim.net.in' ,
     url='https://github.com/nibrahim/lines',
     platforms=['linux', 'osx', 'win32'],
-    install_requires = ['pytest'],
+    install_requires = ['pytest', 'pylev'],
     py_modules=['lines'],
     classifiers=[
         'Development Status :: 4 - Beta',
