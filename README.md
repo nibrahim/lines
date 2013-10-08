@@ -103,11 +103,47 @@ You'd get
     
 * *Identify Patterns*
 
-This groups the elements of the set into groups all of whose members
-don't have an edit distance of more than (by default) 3 between
-them. It's useful to identify "irregular patterns" in a large file.
+This partitions the elements of the set into subsets all of whose
+members have an upper bound on the levenshtein distance from each
+other. This is useful to identify patterns in the input file.
 
-TBD
+So, if I have a file `examples/f6` that looks like this
+
+    Archive.001-of-020.part
+    Archive.002-of-020.part
+    Archive.003-of-020.part
+    Archive.004-of-020.part
+    Archive.005-of-020.part
+    Archive.006-of-020.part
+    Archive.007-of-020.part
+    .Archive.008-of-020.part.zbnrw
+    Archive.009-of-020.part
+    Archive.010-of-020.part
+    Archive.011-of-020.part
+    Archive.012-of-020.part
+    Archive.013-of-020.part
+    Archive.014-of-020.part
+    Archive.015-of-020.part
+    Archive.016-of-020.part
+    Archive.017-of-020.part
+    Archive.018-of-020.part
+    Archive.019-of-020.part
+    Archive.020-of-020.part
+
+I can run `python lines.py --patterns -l 5 examples/f6` and get
+
+
+    19 elements
+    1 elements - {'.Archive.008-of-020.part.zbnrw'}
+
+The `-l 5` is to set the upper bound on the levenshtein distance
+to 5. The `-p` option allows us to specify an "outlier percentage". If
+the number of elements in a subset is below this, it will print all
+the elements of the subset. This is useful to see the items that don't
+match the general pattern in the file.
+
+
+
 
 
 
